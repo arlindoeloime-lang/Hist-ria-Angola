@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>História de Angola 5D | Plataforma Multidimensional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        angola: {
+                            red: '#D80027',
+                            redGlow: '#FF1A40',
+                            gold: '#FFC72C',
+                            goldDark: '#D49B00',
+                            black: '#0D0E12',
+                            card: 'rgba(20, 22, 30, 0.75)',
+                            border: 'rgba(255, 199, 44, 0.25)'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Cinzel', 'serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #08090C;
+            color: #E2E8F0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-heading { font-family: 'Cinzel', serif; }
+
+        /* Glassmorphism custom design */
+        .glass-panel {
+            background: rgba(18, 20, 29, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 199, 44, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: rgba(26, 29, 42, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(216, 0, 39, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 199, 44, 0.6);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(216, 0, 39, 0.25), 0 0 20px rgba(255, 199, 44, 0.2);
+        }
+
+        .neon-glow-gold {
+            text-shadow: 0 0 10px rgba(255, 199, 44, 0.5), 0 0 20px rgba(255, 199, 44, 0.3);
+        }
+
+        .neon-glow-red {
+            text-shadow: 0 0 10px rgba(216, 0, 39, 0.6), 0 0 20px rgba(216, 0, 39, 0.4);
+        }
+
+        .neon-border-gold {
+            box-shadow: 0 0 15px rgba(255, 199, 44, 0.3);
+        }
+
+        /* 3D Flip Card Effect */
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+
+        .flip-card-inner {
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #08090C; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #D80027, #FFC72C);
+            border-radius: 4px;
+        }
+
+        /* Custom Canvas Overlay */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Map SVG styling */
+        .province-path {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            fill: rgba(216, 0, 39, 0.25);
+            stroke: #FFC72C;
+            stroke-width: 1.5;
+        }
+        .province-path:hover, .province-path.active {
+            fill: rgba(255, 199, 44, 0.6);
+            stroke: #FFFFFF;
+            stroke-width: 2.5;
+            filter: drop-shadow(0px 0px 8px #FFC72C);
+        }
+
+        .badge-5d {
+            background: linear-gradient(135deg, #FFC72C 0%, #D80027 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="selection:bg-angola-red selection:text-white">
+
+    <canvas id="bgCanvas"></canvas>
+
+    <header class="fixed top-0 left-0 w-full z-50 glass-panel border-b border-angola-border/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchSection('hero')">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-angola-red to-angola-gold flex items-center justify-center shadow-lg shadow-angola-red/30">
+                    <i class="fa-solid font-bold text-black text-xl flex items-center justify-center">🇦🇴</i>
+                </div>
+                <div>
+                    <h1 class="font-heading text-lg sm:text-xl font-bold tracking-wider text-white">ANGOLA <span class="badge-5d">5D</span></h1>
+                    <p class="text-[10px] text-angola-gold uppercase tracking-widest font-semibold">Soberania & Memória Temporal</p>
+                </div>
+            </div>
+
+            <!-- Navigation Menu Links -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-4">
+                <button onclick="switchSection('timeline')" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium hover:text-angola-gold transition flex items-center gap-2">
+                    <i class="fa-solid fa-hourglass-half text-xs text-angola-gold"></i> Linha do Tempo
+                </button>
+                <button onclick="switchSection('museum')" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium hover:text-angola-gold transition flex items-center gap-2">
+                    <i class="fa-solid fa-landmark text-xs text-angola-gold"></i> Museu Virtual
+                </button>
+                <button onclick="switchSection('map')" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium hover:text-angola-gold transition flex items-center gap-2">
+                    <i class="fa-solid fa-map-location-dot text-xs text-angola-gold"></i> Mapa Histórico
+                </button>
+                <button onclick="switchSection('quiz')" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium hover:text-angola-gold transition flex items-center gap-2">
+                    <i class="fa-solid fa-brain text-xs text-angola-gold"></i> Quiz
+                </button>
+                <button onclick="switchSection('library')" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium hover:text-angola-gold transition flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark text-xs text-angola-gold"></i> Acervo
+                </button>
+            </nav>
+
+            <!-- Audio Controller & Action Button -->
+            <div class="flex items-center space-x-3">
+                <button id="audioToggleBtn" onclick="toggleAudio()" class="px-3 py-2 rounded-full glass-card border border-angola-gold/40 text-angola-gold hover:bg-angola-gold/10 transition flex items-center gap-2 text-xs">
+                    <i id="audioIcon" class="fa-solid fa-volume-xmark"></i>
+                    <span id="audioText" class="hidden sm:inline">Som Ambient 5D</span>
+                </button>
+                <button onclick="toggleMobileMenu()" class="md:hidden text-white p-2 text-xl focus:outline-none">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobileMenu" class="hidden md:hidden glass-panel border-t border-angola-border/30 px-4 pt-2 pb-6 space-y-2">
+            <button onclick="switchSection('timeline'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-angola-red/20"><i class="fa-solid fa-hourglass-half text-angola-gold mr-2"></i>Linha do Tempo</button>
+            <button onclick="switchSection('museum'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-angola-red/20"><i class="fa-solid fa-landmark text-angola-gold mr-2"></i>Museu Virtual</button>
+            <button onclick="switchSection('map'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-angola-red/20"><i class="fa-solid fa-map-location-dot text-angola-gold mr-2"></i>Mapa Histórico</button>
+            <button onclick="switchSection('quiz'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-angola-red/20"><i class="fa-solid fa-brain text-angola-gold mr-2"></i>Quiz Multidimensional</button>
+            <button onclick="switchSection('library'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-angola-red/20"><i class="fa-solid fa-book-bookmark text-angola-gold mr-2"></i>Acervo Cultural</button>
+        </div>
+    </header>
+
+    <main class="pt-24 min-h-screen">
+
+        <!-- SECTION 1: HERO / LANDING PAGE -->
+        <section id="section-hero" class="section-content relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8">
+            <div class="max-w-5xl mx-auto text-center z-10 space-y-8">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-angola-gold/40 text-xs sm:text-sm text-angola-gold font-semibold tracking-wider uppercase mb-2">
+                    <span class="w-2 h-2 rounded-full bg-angola-red animate-ping"></span>
+                    Portal Imersivo Multissensorial de História Africana
+                </div>
+
+                <h1 class="font-heading text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-tight">
+                    HISTÓRIA DE ANGOLA <br/>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-angola-gold via-red-500 to-angola-gold neon-glow-gold">
+                        DIMENSÃO 5D
+                    </span>
+                </h1>
+
+                <p class="max-w-3xl mx-auto text-gray-300 text-base sm:text-lg md:text-xl font-light leading-relaxed">
+                    Viaje no tempo desde os grandiosos Reinos Pré-Coloniais até à Angola Contemporânea. Uma experiência imersiva com som ambiente sintetizado, mapas interativos e modelos visuais em profundidade.
+                </p>
+
+                <!-- 5D Dimension indicators -->
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 max-w-4xl mx-auto pt-4 text-xs font-semibold">
+                    <div class="glass-card p-3 rounded-xl border border-angola-gold/20 text-center">
+                        <i class="fa-solid fa-cube text-angola-gold text-lg mb-1 block"></i>
+                        <span class="text-white">1D - Espaço</span>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-angola-gold/20 text-center">
+                        <i class="fa-solid fa-clock-rotate-left text-angola-gold text-lg mb-1 block"></i>
+                        <span class="text-white">2D - Tempo</span>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-angola-gold/20 text-center">
+                        <i class="fa-solid fa-layer-group text-angola-gold text-lg mb-1 block"></i>
+                        <span class="text-white">3D - Profundidade</span>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-angola-gold/20 text-center">
+                        <i class="fa-solid fa-headphones text-angola-gold text-lg mb-1 block"></i>
+                        <span class="text-white">4D - Som Frequencial</span>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-angola-gold/20 text-center col-span-2 sm:col-span-1">
+                        <i class="fa-solid fa-hands-holding-circle text-angola-gold text-lg mb-1 block"></i>
+                        <span class="text-white">5D - Conhecimento</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+                    <button onclick="switchSection('timeline')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-angola-red to-angola-gold text-black font-bold text-lg hover:shadow-lg hover:shadow-angola-gold/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-compass"></i> Iniciar Jornada Temporal
+                    </button>
+                    <button onclick="playHymnAudio()" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-card border border-angola-gold text-angola-gold font-bold text-lg hover:bg-angola-gold/10 transition flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-music"></i> Ouvir Hino Nacional
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: TIMELINE 3D/5D -->
+        <section id="section-timeline" class="section-content hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="text-center mb-12">
+                <h2 class="font-heading text-3xl sm:text-5xl font-bold text-white mb-4">Linha do Tempo Multidimensional</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Explore as grandes eras históricas de Angola em ordem cronológica com relatos e dados fundamentados.</p>
+                
+                <!-- Era Filter Buttons -->
+                <div class="flex flex-wrap justify-center gap-2 mt-6" id="timelineFilters">
+                    <button onclick="filterTimeline('all')" class="timeline-filter-btn px-4 py-2 rounded-lg text-xs font-bold glass-card border border-angola-gold text-angola-gold active">Todas as Eras</button>
+                    <button onclick="filterTimeline('pre-colonial')" class="timeline-filter-btn px-4 py-2 rounded-lg text-xs font-bold glass-card border border-angola-gold/30 text-gray-300">Reinos Antigos</button>
+                    <button onclick="filterTimeline('colonial')" class="timeline-filter-btn px-4 py-2 rounded-lg text-xs font-bold glass-card border border-angola-gold/30 text-gray-300">Período Colonial</button>
+                    <button onclick="filterTimeline('libertacao')" class="timeline-filter-btn px-4 py-2 rounded-lg text-xs font-bold glass-card border border-angola-gold/30 text-gray-300">Luta de Libertação</button>
+                    <button onclick="filterTimeline('paz')" class="timeline-filter-btn px-4 py-2 rounded-lg text-xs font-bold glass-card border border-angola-gold/30 text-gray-300">Paz e Modernidade</button>
+                </div>
+            </div>
+
+            <!-- Timeline Container -->
+            <div class="relative border-l-2 border-angola-gold/30 ml-4 md:ml-32 space-y-12" id="timelineContainer">
+                <!-- Data populated dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- SECTION 3: VIRTUAL MUSEUM & HEROES -->
+        <section id="section-museum" class="section-content hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="text-center mb-12">
+                <h2 class="font-heading text-3xl sm:text-5xl font-bold text-white mb-4">Museu Virtual & Figuras Históricas</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Cartões 3D interativos com dados biográficos das figuras que moldaram a soberania e cultura nacional.</p>
+            </div>
+
+            <!-- Figures Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="heroesGrid">
+                <!-- Hero Cards Populated via JS -->
+            </div>
+
+            <!-- National Symbols Highlight Section -->
+            <div class="mt-16 glass-panel rounded-3xl p-8 border border-angola-gold/30">
+                <h3 class="font-heading text-2xl font-bold text-angola-gold mb-6 text-center">Símbolos Nacionais de Angola</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="w-20 h-12 mx-auto mb-4 bg-gradient-to-b from-angola-red to-black rounded border border-angola-gold flex items-center justify-center text-angola-gold font-bold text-xl">
+                            🇦🇴
+                        </div>
+                        <h4 class="font-bold text-white mb-2">Bandeira Nacional</h4>
+                        <p class="text-xs text-gray-400">O vermelho representa o sangue derramado na libertação; o preto, o continente africano; a engrenagem e catana em amarelo, os trabalhadores e a riqueza da terra.</p>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-angola-gold/20 flex items-center justify-center text-angola-gold text-2xl">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-2">Insígnia da República</h4>
+                        <p class="text-xs text-gray-400">Constituída pela catana e enxada (trabalho e luta), a estrela amarela (solidariedade e progresso), o livro aberto (educação) e o sol nascente (a nova nação).</p>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-angola-red/20 flex items-center justify-center text-angola-red text-2xl">
+                            <i class="fa-solid fa-music"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-2">Hino "Angola Avante"</h4>
+                        <p class="text-xs text-gray-400 mb-4">Adotado em 1975, com letra de Manuel Rui Alves Monteiro e composição musical de Rui Alberto Vieira Dias Mingas.</p>
+                        <button onclick="playHymnAudio()" class="px-4 py-2 rounded-lg bg-angola-gold text-black text-xs font-bold hover:bg-white transition">
+                            <i class="fa-solid fa-play mr-1"></i> Executar Melodia Synth
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: HISTORICAL MAP -->
+        <section id="section-map" class="section-content hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="text-center mb-8">
+                <h2 class="font-heading text-3xl sm:text-5xl font-bold text-white mb-4">Geografia & Reinos Históricos</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Clique nas regiões do mapa interativo para explorar a abrangência territorial dos reinos antigos e províncias atuais.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- SVG Map Container -->
+                <div class="lg:col-span-7 glass-panel p-6 rounded-3xl text-center relative flex justify-center">
+                    <svg id="angolaMap" viewBox="0 0 500 500" class="w-full max-w-md h-auto">
+                        <!-- Stylized SVG regions representing Angolan Historical Zones -->
+                        <g id="mapRegions">
+                            <!-- Cabinda -->
+                            <path class="province-path" data-id="cabinda" d="M 210 40 L 235 40 L 230 65 L 205 60 Z" />
+                            <!-- Norte / Kongo -->
+                            <path class="province-path" data-id="kongo" d="M 190 75 L 300 75 L 320 150 L 210 160 L 180 110 Z" />
+                            <!-- Luanda / Ndongo / Matamba -->
+                            <path class="province-path" data-id="ndongo" d="M 170 160 L 210 160 L 320 150 L 310 230 L 190 220 Z" />
+                            <!-- Centro / Ovimbundu / Benguela -->
+                            <path class="province-path" data-id="ovimbundu" d="M 180 220 L 310 230 L 300 330 L 160 300 Z" />
+                            <!-- Leste / Cokwe -->
+                            <path class="province-path" data-id="cokwe" d="M 320 150 L 430 170 L 420 340 L 300 330 Z" />
+                            <!-- Sul / Kwanhama / Ndombe -->
+                            <path class="province-path" data-id="kwanhama" d="M 160 300 L 300 330 L 390 440 L 190 450 Z" />
+                        </g>
+                    </svg>
+                    <span class="absolute bottom-4 left-4 text-xs text-gray-400 bg-black/60 px-3 py-1 rounded-full border border-angola-gold/20">
+                        <i class="fa-solid fa-mouse-pointer text-angola-gold mr-1"></i> Selecione uma região
+                    </span>
+                </div>
+
+                <!-- Region Info Display Box -->
+                <div class="lg:col-span-5 glass-panel p-8 rounded-3xl border border-angola-gold/30 min-h-[350px] flex flex-col justify-between" id="mapInfoCard">
+                    <div>
+                        <div class="inline-block px-3 py-1 rounded-full bg-angola-gold/20 text-angola-gold text-xs font-bold mb-3" id="mapRegionTag">
+                            REINO HISTÓRICO
+                        </div>
+                        <h3 class="font-heading text-3xl font-bold text-white mb-4" id="mapRegionTitle">Reino do Kongo</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-4" id="mapRegionDesc">
+                            Um dos mais influentes estados da África Central fundada no século XIV. Mbanza Kongo era o centro político e espiritual de uma vasta rede de comércio e diplomacia.
+                        </p>
+                        <div class="border-t border-gray-700 pt-4 space-y-2 text-xs text-gray-400" id="mapRegionStats">
+                            <p><strong class="text-angola-gold">Capital Histórica:</strong> Mbanza Kongo</p>
+                            <p><strong class="text-angola-gold">Língua Predominante:</strong> Kikongo</p>
+                            <p><strong class="text-angola-gold">Período de Apogeu:</strong> Séculos XIV - XVII</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-800 text-right">
+                        <button onclick="switchSection('timeline')" class="text-xs text-angola-gold font-bold hover:underline flex items-center gap-1 justify-end ml-auto">
+                            Ver eventos na linha do tempo <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: QUIZ MULTIDIMENSIONAL -->
+        <section id="section-quiz" class="section-content hidden max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="text-center mb-10">
+                <h2 class="font-heading text-3xl sm:text-5xl font-bold text-white mb-4">Desafio do Conhecimento 5D</h2>
+                <p class="text-gray-400">Teste seus conhecimentos sobre a rica história de Angola e conquiste o seu Certificado Virtual.</p>
+            </div>
+
+            <!-- Quiz Main Box -->
+            <div class="glass-panel p-8 rounded-3xl border border-angola-gold/30 relative" id="quizBox">
+                <!-- Header Status -->
+                <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-4">
+                    <span class="text-xs text-angola-gold font-bold uppercase tracking-wider" id="quizProgressText">Pergunta 1 de 5</span>
+                    <span class="px-3 py-1 rounded-full bg-angola-red/30 text-angola-gold text-xs font-bold" id="quizScoreText">Pontuação: 0</span>
+                </div>
+
+                <!-- Question Text -->
+                <h3 class="font-heading text-xl sm:text-2xl font-bold text-white mb-6" id="quizQuestion">
+                    Em que ano Angola proclamou a sua Independência Nacional?
+                </h3>
+
+                <!-- Answer Options -->
+                <div class="space-y-4 mb-8" id="quizOptions">
+                    <!-- Populated dynamically via JS -->
+                </div>
+
+                <!-- Feedback Message -->
+                <div id="quizFeedback" class="hidden p-4 rounded-xl text-sm font-semibold mb-6"></div>
+
+                <!-- Next Button -->
+                <div class="flex justify-end">
+                    <button id="quizNextBtn" onclick="nextQuestion()" class="hidden px-6 py-3 rounded-xl bg-gradient-to-r from-angola-red to-angola-gold text-black font-bold text-sm hover:opacity-90 transition">
+                        Próxima Pergunta <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Result & Certificate Generator Modal -->
+            <div id="certificateModal" class="hidden glass-panel p-8 rounded-3xl text-center border-2 border-angola-gold space-y-6">
+                <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-angola-gold to-yellow-200 flex items-center justify-center text-black text-4xl shadow-lg shadow-angola-gold/50">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <h3 class="font-heading text-3xl font-bold text-white">Certificado de Conhecimento Histórico</h3>
+                <p class="text-gray-300 text-sm">Parabéns! Você demonstrou excelente domínio sobre a história de Angola.</p>
+                
+                <div class="p-6 bg-black/60 rounded-2xl border border-angola-gold/40 text-left max-w-lg mx-auto space-y-3">
+                    <div class="text-center pb-2 border-b border-angola-gold/20">
+                        <p class="text-xs text-angola-gold uppercase tracking-widest font-bold">República de Angola • Plataforma 5D</p>
+                        <h4 class="font-heading text-lg font-bold text-white mt-1">CERTIFICADO DE MÉRITO HISTÓRICO</h4>
+                    </div>
+                    <p class="text-xs text-gray-300 leading-relaxed text-center italic">
+                        "Certifica-se que o visitante concluiu com aproveitamento o teste multidimensional sobre a História, Cultura e Heróis da Nação Angolana."
+                    </p>
+                    <div class="flex justify-between items-center text-[10px] text-gray-400 pt-3">
+                        <span>Pontuação Final: <strong id="certScore" class="text-angola-gold">100%</strong></span>
+                        <span>Emitido em: <strong id="certDate"></strong></span>
+                    </div>
+                </div>
+
+                <div class="flex justify-center gap-4">
+                    <button onclick="restartQuiz()" class="px-6 py-3 rounded-xl glass-card border border-angola-gold text-angola-gold font-bold text-sm hover:bg-angola-gold/10">
+                        <i class="fa-solid fa-rotate-right mr-2"></i> Refazer Quiz
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: LIBRARY & CULTURAL REPOSITORY -->
+        <section id="section-library" class="section-content hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="text-center mb-12">
+                <h2 class="font-heading text-3xl sm:text-5xl font-bold text-white mb-4">Acervo & Saberes Tradicionais</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Explore provérbios, línguas nacionais, documentos e a riqueza imaterial das várias etnias de Angola.</p>
+            </div>
+
+            <!-- Tab Buttons -->
+            <div class="flex justify-center space-x-4 mb-8">
+                <button onclick="switchLibTab('proverbs')" id="tabBtn-proverbs" class="px-5 py-2.5 rounded-xl glass-card text-xs sm:text-sm font-bold text-angola-gold border border-angola-gold">
+                    Provérbios & Filosofia
+                </button>
+                <button onclick="switchLibTab('languages')" id="tabBtn-languages" class="px-5 py-2.5 rounded-xl glass-card text-xs sm:text-sm font-bold text-gray-400 border border-transparent">
+                    Línguas Nacionais
+                </button>
+            </div>
+
+            <!-- Content Area -->
+            <div id="libContent-proverbs" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Proverbs Grid -->
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-l-angola-gold">
+                    <span class="text-[10px] uppercase font-bold text-angola-gold tracking-wider">Tradição Umbundu</span>
+                    <h4 class="font-heading text-lg font-bold text-white my-2">"Olosoi via mukanda ka vi pui sema."</h4>
+                    <p class="text-xs text-gray-300 italic mb-3">Tradução: "As palavras de um livro nunca acabam."</p>
+                    <p class="text-xs text-gray-400">Significado: O conhecimento registrado é eterno e serve de guia para as gerações vindouras.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-l-angola-red">
+                    <span class="text-[10px] uppercase font-bold text-angola-gold tracking-wider">Tradição Kimbundu</span>
+                    <h4 class="font-heading text-lg font-bold text-white my-2">"Mutu uala ni muini kanda mukua ua kufua."</h4>
+                    <p class="text-xs text-gray-300 italic mb-3">Tradução: "Quem tem luz não caminha no escuro."</p>
+                    <p class="text-xs text-gray-400">Significado: A sabedoria dos mais velhos e a memória histórica iluminam o caminho do povo.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-l-angola-gold">
+                    <span class="text-[10px] uppercase font-bold text-angola-gold tracking-wider">Tradição Cokwe</span>
+                    <h4 class="font-heading text-lg font-bold text-white my-2">"Kufua cha pwo, kufua cha chifuchi."</h4>
+                    <p class="text-xs text-gray-300 italic mb-3">Tradução: "A morte da mulher é a perda da fundação da terra."</p>
+                    <p class="text-xs text-gray-400">Significado: Valorização central da mulher como guardiã da vida, cultura e estrutura social.</p>
+                </div>
+            </div>
+
+            <div id="libContent-languages" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Languages -->
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h4 class="font-heading text-xl font-bold text-angola-gold mb-2">Umbuñdu</h4>
+                    <p class="text-xs text-gray-300 mb-4">Falada predominantemente nas províncias do Planalto Central (Huambo, Bié, Benguela). É a língua bantu com maior número de falantes em Angola.</p>
+                    <div class="bg-black/50 p-3 rounded-lg text-xs space-y-1">
+                        <p><strong class="text-white">Olá / Como vai:</strong> Walale po?</p>
+                        <p><strong class="text-white">Obrigado:</strong> Ndapandula</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h4 class="font-heading text-xl font-bold text-angola-gold mb-2">Kimbundu</h4>
+                    <p class="text-xs text-gray-300 mb-4">Falada nas regiões de Luanda, Bengo, Cuanza Norte e Cuanza Sul, e Malanje. Teve grande impacto na formação do português falado em Angola e no Brasil.</p>
+                    <div class="bg-black/50 p-3 rounded-lg text-xs space-y-1">
+                        <p><strong class="text-white">Olá / Bom dia:</strong> Nguikaza / Sakidila</p>
+                        <p><strong class="text-white">Obrigado:</strong> Sakidila</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="glass-panel border-t border-angola-border/30 mt-20 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between text-xs text-gray-400 gap-4">
+            <div class="flex items-center space-x-2">
+                <span class="text-angola-gold font-bold">Angola 5D</span>
+                <span>— Preservação Digital do Património Histórico</span>
+            </div>
+            <div>
+                <p>Desenvolvido com tecnologia Web Canvas & Multidimensional Engine • 2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* -------------------------------------------------------------
+           1. DATA STORE (Timeline, Heroes, Quiz, Regions)
+           ------------------------------------------------------------- */
+        const TIMELINE_DATA = [
+            {
+                era: 'pre-colonial',
+                year: 'Séc. XIV - XVII',
+                title: 'Reino do Kongo e Fundação de Mbanza Kongo',
+                desc: 'Estabelecimento de uma das redes políticas e diplomáticas mais sofisticadas da África Central, com centro em Mbanza Kongo (declarada Património Mundial da UNESCO).'
+            },
+            {
+                era: 'pre-colonial',
+                year: '1624 - 1663',
+                title: 'Reinado da Rainha Njinga Mbandi (Ndongo e Matamba)',
+                desc: 'Resistência militar e diplomática notável contra a penetração colonial portuguesa. A Rainha Njinga unificou reinos e defendeu a soberania angolana durante quatro décadas.'
+            },
+            {
+                era: 'colonial',
+                year: '1902',
+                title: 'Guerra do Bailundo e Resistência do Planalto Central',
+                desc: 'Grande levante dos reinos Ovimbundu liderado por Mutu-ya-Kevela contra a ocupação territorial do interior de Angola.'
+            },
+            {
+                era: 'libertacao',
+                year: '4 de Fevereiro de 1961',
+                title: 'Início da Luta Armada de Libertação Nacional',
+                desc: 'Ataque às cadeias de Luanda que marcou o arranque da guerra anticolonial conduzida pelos movimentos de libertação nacional.'
+            },
+            {
+                era: 'libertacao',
+                year: '11 de Novembro de 1975',
+                title: 'Proclamação da Independência Nacional',
+                desc: 'António Agostinho Neto proclama em Luanda a Independência de Angola, nascendo a República Popular de Angola.'
+            },
+            {
+                era: 'paz',
+                year: '4 de Abril de 2002',
+                title: 'Assinatura dos Acordos de Paz e Reconciliação Nacional',
+                desc: 'Fim do conflito civil com a assinatura do Protocolo de Luena, iniciando a era de reconstrução nacional, paz duradoura e progresso.'
+            }
+        ];
+
+        const HEROES_DATA = [
+            {
+                name: 'Rainha Njinga Mbandi',
+                role: 'Soberana do Ndongo e Matamba',
+                period: '1583 - 1663',
+                desc: 'Símbolo da resistência anticolonial africana e astúcia diplomática. Negociou tratados de igual para igual com potências europeias.',
+                icon: 'fa-crown'
+            },
+            {
+                name: 'Dr. António Agostinho Neto',
+                role: '1º Presidente de Angola & Poeta',
+                period: '1922 - 1979',
+                desc: 'Líder do MPLA, médico e poeta maior da literatura angolana. Proclamou a Independência Nacional a 11 de Novembro de 1975.',
+                icon: 'fa-feather'
+            },
+            {
+                name: 'Mandume ya Ndemufayo',
+                role: 'Rei dos Cuanhamas',
+                period: '1894 - 1917',
+                desc: 'Último grande rei do Reino do Cuanhama no Sul de Angola. Notável guerreiro que preferiu a morte à rendição às forças coloniais.',
+                icon: 'fa-shield-cat'
+            },
+            {
+                name: 'Ekuikui II',
+                role: 'Rei de Bailundo',
+                period: '1818 - 1890',
+                desc: 'Soberano do Reino do Bailundo conhecido pelo fortalecimento económico, estratégico e diplomático do Planalto Central.',
+                icon: 'fa-chess-king'
+            },
+            {
+                name: 'Holden Roberto',
+                role: 'Líder Histórico da FNLA',
+                period: '1923 - 2007',
+                desc: 'Uma das figuras pioneiras do nacionalismo angolano e da luta armada de libertação nacional.',
+                icon: 'fa-person-military-rifle'
+            },
+            {
+                name: 'Jonas Malheiro Savimbi',
+                role: 'Fundador da UNITA',
+                period: '1934 - 2002',
+                desc: 'Figura central da história política contemporânea de Angola e da luta armada de libertação.',
+                icon: 'fa-flag'
+            }
+        ];
+
+        const REGIONS_DATA = {
+            kongo: {
+                title: 'Reino do Kongo (Norte)',
+                tag: 'REINO HISTÓRICO',
+                desc: 'Vasto reino que abrangia as províncias do Zaire, Uíge e Cabinda. A sua capital Mbanza Kongo era um centro cosmopolita com complexo sistema de impostos e administração territorial.',
+                stats: '<p><strong class="text-angola-gold">Capital:</strong> Mbanza Kongo</p><p><strong class="text-angola-gold">Cultura:</strong> Bakongo / Kikongo</p>'
+            },
+            ndongo: {
+                title: 'Reinos do Ndongo e Matamba',
+                tag: 'RESISTÊNCIA SOBERANA',
+                desc: 'Região central da bacia do Kwanza, governada pelos Ngola. Famosa pela forte resistência à ocupação estrangeira sob a liderança de figuras lendárias como a Rainha Njinga.',
+                stats: '<p><strong class="text-angola-gold">Capital Histórica:</strong> Kabasa</p><p><strong class="text-angola-gold">Língua:</strong> Kimbundu</p>'
+            },
+            ovimbundu: {
+                title: 'Reinos Ovimbundu (Planalto Central)',
+                tag: 'FEDERAÇÃO DE REINOS',
+                desc: 'Composto por 13 reinos históricos principais (Bailundo, Wambo, Ciyaka, etc.). Famosos pelas grandes caravanas comerciais e resistência militar liderada por Ekuikui II e Mutu-ya-Kevela.',
+                stats: '<p><strong class="text-angola-gold">Região:</strong> Huambo, Bié, Benguela</p><p><strong class="text-angola-gold">Língua:</strong> Umbundu</p>'
+            },
+            cokwe: {
+                title: 'Territórios Cokwe / Lunda',
+                tag: 'ARTE E EXPANSÃO',
+                desc: 'Notáveis pela sua rica tradição artística (esculturas do "Pensador" e arte Sona), expansão militar no século XIX e domínio da navegação em rios orientais.',
+                stats: '<p><strong class="text-angola-gold">Região:</strong> Lunda Norte, Lunda Sul, Moxico</p><p><strong class="text-angola-gold">Símbolo Cultural:</strong> O Pensador (Samanyonga)</p>'
+            },
+            kwanhama: {
+                title: 'Reino do Cuanhama (Sul)',
+                tag: 'RESISTÊNCIA DO SUL',
+                desc: 'Estado fortemente organizado no Sul de Angola. Sob o comando de Mandume ya Ndemufayo, ofereceu uma das resistências mais heroicas da história de África.',
+                stats: '<p><strong class="text-angola-gold">Região:</strong> Cunene, Namibe, Huíla</p><p><strong class="text-angola-gold">Língua:</strong> Cuanhama / Oshiwambo</p>'
+            },
+            cabinda: {
+                title: 'Cabinda (Norte)',
+                tag: 'TERRITÓRIO HISTÓRICO',
+                desc: 'Região de densas florestas e rica herança marítima, historicamente ligada aos Reinos de Nsyo, Kakongo e Loango.',
+                stats: '<p><strong class="text-angola-gold">Recursos Históricos:</strong> Comércio marítimo e agricultura</p><p><strong class="text-angola-gold">Língua:</strong> Ibinda / Kikongo</p>'
+            }
+        };
+
+        const QUIZ_QUESTIONS = [
+            {
+                question: "Qual foi a capital do histórico Reino do Kongo, hoje reconhecida como Património Mundial da UNESCO?",
+                options: ["Luanda", "Mbanza Kongo", "Huambo", "Benguela"],
+                correct: 1
+            },
+            {
+                question: "Quem foi a soberana angolana que liderou a resistência dos reinos do Ndongo e Matamba no século XVII?",
+                options: ["Rainha Nhakatolo", "Rainha Njinga Mbandi", "Empress Taytu", "Rainha Yaa Asantewaa"],
+                correct: 1
+            },
+            {
+                question: "Em que data celebra-se o Dia da Independência Nacional de Angola?",
+                options: ["4 de Fevereiro", "17 de Setembro", "11 de Novembro", "4 de Abril"],
+                correct: 2
+            },
+            {
+                question: "Quem proferiu a célebre declaração de Independência em Luanda no ano de 1975?",
+                options: ["Holden Roberto", "Jonas Savimbi", "António Agostinho Neto", "José Eduardo dos Santos"],
+                correct: 2
+            },
+            {
+                question: "O ano de 2002 marcou um acontecimento histórico decisivo para Angola. Qual foi?",
+                options: ["Assinatura da Paz Definitiva", "Início do Reino do Kongo", "Abertura da Universidade", "Primeira Exploração de Petróleo"],
+                correct: 0
+            }
+        ];
+
+        /* -------------------------------------------------------------
+           2. NAVIGATION & UI SWITCHER
+           ------------------------------------------------------------- */
+        function switchSection(sectionId) {
+            document.querySelectorAll('.section-content').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`section-${sectionId}`);
+            if(target) target.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            playTone(440, 'sine', 0.1);
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        /* -------------------------------------------------------------
+           3. 5D BACKGROUND PARTICLE CANVAS (Three-like 2D context)
+           ------------------------------------------------------------- */
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.z = Math.random() * 2 + 0.5;
+                this.size = Math.random() * 2 + 1;
+                this.speedY = (Math.random() * 0.5 + 0.2) * this.z;
+                this.color = Math.random() > 0.5 ? '#FFC72C' : '#D80027';
+                this.alpha = Math.random() * 0.6 + 0.2;
+            }
+            update() {
+                this.y -= this.speedY;
+                if (this.y < 0) this.reset();
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * this.z, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.alpha;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 70; i++) particles.push(new Particle());
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        /* -------------------------------------------------------------
+           4. WEB AUDIO API SYNTHESIZER (4D Sound FX & Hymn)
+           ------------------------------------------------------------- */
+        let audioCtx = null;
+        let isAudioPlaying = false;
+        let ambientOsc = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playTone(freq, type = 'sine', duration = 0.2) {
+            initAudio();
+            if(!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e){}
+        }
+
+        function toggleAudio() {
+            initAudio();
+            const btnText = document.getElementById('audioText');
+            const btnIcon = document.getElementById('audioIcon');
+
+            if (!isAudioPlaying) {
+                // Start continuous ambient drone
+                ambientOsc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                ambientOsc.type = 'triangle';
+                ambientOsc.frequency.value = 110; // A2 note
+                gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                ambientOsc.connect(gain);
+                gain.connect(audioCtx.destination);
+                ambientOsc.start();
+                
+                isAudioPlaying = true;
+                btnText.textContent = "Som: Ativado";
+                btnIcon.className = "fa-solid fa-volume-high text-angola-gold";
+            } else {
+                if (ambientOsc) ambientOsc.stop();
+                isAudioPlaying = false;
+                btnText.textContent = "Som Ambient 5D";
+                btnIcon.className = "fa-solid fa-volume-xmark";
+            }
+        }
+
+        // Synthesize Anthem Melody Notes
+        function playHymnAudio() {
+            initAudio();
+            const notes = [
+                {f: 261.63, d: 0.4}, {f: 329.63, d: 0.4}, {f: 392.00, d: 0.6},
+                {f: 392.00, d: 0.4}, {f: 440.00, d: 0.4}, {f: 392.00, d: 0.8}
+            ];
+            let time = audioCtx.currentTime;
+            notes.forEach(note => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'square';
+                osc.frequency.value = note.f;
+                gain.gain.setValueAtTime(0.04, time);
+                gain.gain.exponentialRampToValueAtTime(0.001, time + note.d);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(time);
+                osc.stop(time + note.d);
+                time += note.d + 0.05;
+            });
+        }
+
+        /* -------------------------------------------------------------
+           5. DYNAMIC POPULATORS (Timeline, Heroes, Map)
+           ------------------------------------------------------------- */
+        function renderTimeline(filter = 'all') {
+            const container = document.getElementById('timelineContainer');
+            container.innerHTML = '';
+
+            const filtered = filter === 'all' ? TIMELINE_DATA : TIMELINE_DATA.filter(item => item.era === filter);
+
+            filtered.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = "relative pl-6 sm:pl-10 group";
+                div.innerHTML = `
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-angola-red border-2 border-angola-gold shadow-lg shadow-angola-red group-hover:scale-125 transition-transform"></div>
+                    <div class="glass-panel p-6 rounded-2xl border border-angola-gold/20 hover:border-angola-gold/60 transition">
+                        <span class="inline-block px-3 py-1 rounded-full bg-angola-gold/20 text-angola-gold text-xs font-bold mb-2">${item.year}</span>
+                        <h3 class="font-heading text-xl font-bold text-white mb-2">${item.title}</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">${item.desc}</p>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function filterTimeline(era) {
+            document.querySelectorAll('.timeline-filter-btn').forEach(b => {
+                b.classList.remove('border-angola-gold', 'text-angola-gold');
+                b.classList.add('border-angola-gold/30', 'text-gray-300');
+            });
+            event.target.classList.add('border-angola-gold', 'text-angola-gold');
+            renderTimeline(era);
+        }
+
+        function renderHeroes() {
+            const grid = document.getElementById('heroesGrid');
+            grid.innerHTML = '';
+
+            HEROES_DATA.forEach(hero => {
+                const card = document.createElement('div');
+                card.className = "flip-card perspective-1000 h-80 w-full";
+                card.innerHTML = `
+                    <div class="flip-card-inner relative w-full h-full transform-style-3d cursor-pointer">
+                        <!-- Front side -->
+                        <div class="absolute inset-0 glass-panel rounded-3xl p-6 flex flex-col justify-between items-center text-center backface-hidden border border-angola-gold/30">
+                            <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-angola-red to-angola-gold flex items-center justify-center text-black text-3xl shadow-lg mt-4">
+                                <i class="fa-solid ${hero.icon}"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-heading text-xl font-bold text-white">${hero.name}</h3>
+                                <p class="text-xs text-angola-gold font-semibold mt-1">${hero.role}</p>
+                            </div>
+                            <span class="text-[10px] text-gray-400 uppercase tracking-widest">Passe o cursor/Toque para detalhes</span>
+                        </div>
+                        <!-- Back side -->
+                        <div class="absolute inset-0 glass-panel rounded-3xl p-6 flex flex-col justify-center text-center rotate-y-180 backface-hidden border border-angola-red/50 bg-black/90">
+                            <h4 class="font-heading text-lg font-bold text-angola-gold mb-2">${hero.name}</h4>
+                            <p class="text-xs text-angola-red font-bold mb-3">${hero.period}</p>
+                            <p class="text-xs text-gray-300 leading-relaxed">${hero.desc}</p>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        /* Interactive Map Logic */
+        document.querySelectorAll('.province-path').forEach(path => {
+            path.addEventListener('click', function() {
+                document.querySelectorAll('.province-path').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                
+                const regId = this.getAttribute('data-id');
+                const data = REGIONS_DATA[regId];
+                if(data) {
+                    document.getElementById('mapRegionTitle').textContent = data.title;
+                    document.getElementById('mapRegionTag').textContent = data.tag;
+                    document.getElementById('mapRegionDesc').textContent = data.desc;
+                    document.getElementById('mapRegionStats').innerHTML = data.stats;
+                    playTone(587.33, 'triangle', 0.15); // D5 note
+                }
+            });
+        });
+
+        /* -------------------------------------------------------------
+           6. QUIZ ENGINE & CERTIFICATE
+           ------------------------------------------------------------- */
+        let currentQuestionIdx = 0;
+        let quizScore = 0;
+
+        function loadQuestion() {
+            const q = QUIZ_QUESTIONS[currentQuestionIdx];
+            document.getElementById('quizProgressText').textContent = `Pergunta ${currentQuestionIdx + 1} de ${QUIZ_QUESTIONS.length}`;
+            document.getElementById('quizQuestion').textContent = q.question;
+            
+            const optionsContainer = document.getElementById('quizOptions');
+            optionsContainer.innerHTML = '';
+            document.getElementById('quizFeedback').classList.add('hidden');
+            document.getElementById('quizNextBtn').classList.add('hidden');
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl glass-card border border-angola-gold/20 hover:border-angola-gold text-white text-sm font-medium transition flex items-center justify-between";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle text-gray-500"></i>`;
+                btn.onclick = () => selectAnswer(idx);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(selectedIdx) {
+            const q = QUIZ_QUESTIONS[currentQuestionIdx];
+            const options = document.getElementById('quizOptions').children;
+            const feedback = document.getElementById('quizFeedback');
+
+            for (let btn of options) btn.disabled = true;
+
+            if (selectedIdx === q.correct) {
+                quizScore += 20;
+                options[selectedIdx].classList.add('border-green-500', 'bg-green-500/20');
+                feedback.className = "p-4 rounded-xl text-sm font-semibold mb-6 bg-green-500/20 text-green-300 border border-green-500/40";
+                feedback.textContent = "Resposta Correta! Excelente conhecimento histórico.";
+                playTone(523.25, 'sine', 0.2); // C5
+            } else {
+                options[selectedIdx].classList.add('border-red-500', 'bg-red-500/20');
+                options[q.correct].classList.add('border-green-500', 'bg-green-500/20');
+                feedback.className = "p-4 rounded-xl text-sm font-semibold mb-6 bg-red-500/20 text-red-300 border border-red-500/40";
+                feedback.textContent = `Resposta Incorreta. A opção certa era: ${q.options[q.correct]}`;
+                playTone(220, 'sawtooth', 0.2);
+            }
+
+            document.getElementById('quizScoreText').textContent = `Pontuação: ${quizScore}`;
+            feedback.classList.remove('hidden');
+            document.getElementById('quizNextBtn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestionIdx++;
+            if (currentQuestionIdx < QUIZ_QUESTIONS.length) {
+                loadQuestion();
+            } else {
+                showCertificate();
+            }
+        }
+
+        function showCertificate() {
+            document.getElementById('quizBox').classList.add('hidden');
+            const modal = document.getElementById('certificateModal');
+            modal.classList.remove('hidden');
+            document.getElementById('certScore').textContent = `${quizScore}%`;
+            document.getElementById('certDate').textContent = new Date().toLocaleDateString('pt-AO');
+        }
+
+        function restartQuiz() {
+            currentQuestionIdx = 0;
+            quizScore = 0;
+            document.getElementById('quizScoreText').textContent = `Pontuação: 0`;
+            document.getElementById('certificateModal').classList.add('hidden');
+            document.getElementById('quizBox').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        /* -------------------------------------------------------------
+           7. LIBRARY TABS
+           ------------------------------------------------------------- */
+        function switchLibTab(tab) {
+            document.getElementById('libContent-proverbs').classList.add('hidden');
+            document.getElementById('libContent-languages').classList.add('hidden');
+            
+            document.getElementById('tabBtn-proverbs').className = "px-5 py-2.5 rounded-xl glass-card text-xs sm:text-sm font-bold text-gray-400 border border-transparent";
+            document.getElementById('tabBtn-languages').className = "px-5 py-2.5 rounded-xl glass-card text-xs sm:text-sm font-bold text-gray-400 border border-transparent";
+
+            document.getElementById(`libContent-${tab}`).classList.remove('hidden');
+            document.getElementById(`tabBtn-${tab}`).className = "px-5 py-2.5 rounded-xl glass-card text-xs sm:text-sm font-bold text-angola-gold border border-angola-gold";
+        }
+
+        /* INITIALIZATION ON WINDOW LOAD */
+        window.onload = function() {
+            renderTimeline();
+            renderHeroes();
+            loadQuestion();
+        }
+    </script>
+</body>
+</html>
